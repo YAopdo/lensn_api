@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: lensnet-service
+    env: docker
+    plan: free                      # or standard for >512 MB RAM
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    branch: main
+    healthCheckPath: /docs          # FastAPI’s Swagger UI
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
