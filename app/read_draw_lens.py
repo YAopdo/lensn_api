@@ -18,12 +18,19 @@ import matplotlib.pyplot as plt
 def download_zmx_file(efl, f_number, hfov, output_dir="lensnet_files"):
     base_url = "https://lensnet.herokuapp.com/"
     param_key = (round(efl, 2), round(f_number, 2), round(hfov, 2))
-
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")               # run without a UI
+    chrome_options.add_argument("--no-sandbox")             # required in most containers
+    chrome_options.add_argument("--disable-dev-shm-usage")  # keeps Chrome from using /dev/shm
     chrome_options.add_argument("--window-size=1920,1080")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    chrome_options.binary_location = "/usr/bin/google-chrome"   # path we installed in Dockerfile
+    
+    # Use the chromedriver that apt installed for us; no runtime download needed
+    driver = webdriver.Chrome(options=chrome_options)
+
 
     print(f"🔄 Downloading ZMX for EFL={efl}, F#={f_number}, HFOV={hfov}")
     driver.get(base_url)
