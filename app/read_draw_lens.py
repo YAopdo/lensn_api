@@ -33,6 +33,26 @@ def download_zmx_file(efl, f_number, hfov, output_dir="lensnet_files"):
 
     print(f"🔄 Downloading ZMX for EFL={efl}, F#={f_number}, HFOV={hfov}")
     driver.get(base_url)
+    import shutil
+    import subprocess
+    
+    print("🔍 Checking paths:")
+    print(f"CHROME_BIN: {chrome_options.binary_location}")
+    print(f"which chrome: {shutil.which('google-chrome')}")
+    print(f"which chromium: {shutil.which('chromium')}")
+    print(f"which chromedriver: {shutil.which('chromedriver')}")
+    
+    try:
+        chrome_version = subprocess.check_output(["chromium", "--version"]).decode()
+        print(f"✅ Chromium version: {chrome_version}")
+    except Exception as e:
+        print(f"❌ Chromium version check failed: {e}")
+    
+    try:
+        driver_version = subprocess.check_output(["chromedriver", "--version"]).decode()
+        print(f"✅ Chromedriver version: {driver_version}")
+    except Exception as e:
+        print(f"❌ Chromedriver version check failed: {e}")
 
     try:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "efl")))
