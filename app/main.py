@@ -2,7 +2,8 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import uuid, shutil, os
-
+import traceback
+    
 from .read_draw_lens import download_zmx_file, parse_zmx_and_create_optic
 
 app = FastAPI(title="LensNet wrapper")
@@ -50,7 +51,6 @@ def generate_lens(
 
         return {"files": files}
 
-    import traceback
     
     except Exception as e:
         print("💥 Exception occurred:")
