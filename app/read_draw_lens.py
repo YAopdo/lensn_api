@@ -19,29 +19,37 @@ def download_zmx_file(efl, f_number, hfov, output_dir="lensnet_files"):
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")               # run without a UI
-    chrome_options.add_argument("--no-sandbox")             # required in most containers
-    chrome_options.add_argument("--disable-dev-shm-usage")  # keeps Chrome from using /dev/shm
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.binary_location = "/usr/bin/chromium"
-
-    
-    # Use the chromedriver that apt installed for us; no runtime download needed
-    driver = webdriver.Chrome(options=chrome_options)
-
-
-    print(f"🔄 Downloading ZMX for EFL={efl}, F#={f_number}, HFOV={hfov}")
-    driver.get(base_url)
     import shutil
     import subprocess
     
-    print("🔍 Checking paths:")
-    print(f"CHROME_BIN: {chrome_options.binary_location}")
-    print(f"which chrome: {shutil.which('google-chrome')}")
+    print("🔍 Checking paths before launching Chrome:")
+    print(f"CHROME_BIN (manually set): /usr/bin/chromium")
+    print(f"which google-chrome: {shutil.which('google-chrome')}")
     print(f"which chromium: {shutil.which('chromium')}")
     print(f"which chromedriver: {shutil.which('chromedriver')}")
     
+    try:
+        chrome_version = subprocess.check_output(["chromium", "--version"]).decode()
+        print(f"✅ Chromium version: {chrome_version}")
+    except Exception as e:
+        print(f"❌ Chromium version check failed: {e}")
+    
+    try:
+        driver_version = subprocess.check_output(["chromedriver", "--version"]).decode()
+        print(f"✅ Chromedriver version: {driver_version}")
+    except Exception as e:
+        print(f"❌ Chromedriver version check failed: {e}")
+    
+    # ⬇️ NOW launch the driver
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.binary_location = "/usr/bin/chromium"
+    
+    driver = webdriver.Chrome(options=chrome_options)
+
     try:
         chrome_version = subprocess.check_output(["chromium", "--version"]).decode()
         print(f"✅ Chromium version: {chrome_version}")
