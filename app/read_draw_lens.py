@@ -24,7 +24,8 @@ def download_zmx_file(efl, f_number, hfov, output_dir="lensnet_files"):
     chrome_options.add_argument("--no-sandbox")             # required in most containers
     chrome_options.add_argument("--disable-dev-shm-usage")  # keeps Chrome from using /dev/shm
     chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.binary_location = "/usr/bin/google-chrome"   # path we installed in Dockerfile
+    chrome_options.binary_location = "/usr/bin/chromium"
+
     
     # Use the chromedriver that apt installed for us; no runtime download needed
     driver = webdriver.Chrome(options=chrome_options)
