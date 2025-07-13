@@ -1,7 +1,6 @@
 fastapi
 uvicorn[standard]
 selenium
-webdriver-manager
 numpy
 matplotlib
 optiland      # if it’s on PyPI; otherwise use a private wheel or git URL
