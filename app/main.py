@@ -50,5 +50,10 @@ def generate_lens(
 
         return {"files": files}
 
+    import traceback
+    
     except Exception as e:
+        print("💥 Exception occurred:")
+        traceback.print_exc()  # Logs full traceback
         raise HTTPException(status_code=500, detail=str(e))
+
